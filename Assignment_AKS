@@ -1,0 +1,106 @@
+#include<stdio.h>
+typedef struct student{
+    int id,pass,amount,age;
+    char name[20],loc[20];
+}student;
+
+void insert(){
+    student *s;
+    int n,i;
+    FILE *fl;
+    printf("Enter numbers of people : ");
+    scanf("%d",&n);
+
+    s = (student*)calloc(n, sizeof(student));
+    fl = fopen("student.txt","w");
+    for(i=0;i<n;i++){
+        printf("ID : ");
+        scanf("%d",&s[i]);
+        fflush(stdin);
+        printf("Name :");
+        scanf("%[^\n]s",&s[i].name);
+        printf("Enter Ur password : ");
+        scanf("%d",&s[i].pass);
+        printf("Enter Ur amount : ");
+        scanf("%d",&s[i].amount);
+        printf("Enter Ur age : ");
+        scanf("%d",&s[i].age);
+        fflush(stdin);
+        printf("Enter Ur location : ");
+        gets(s[i].loc);
+        fwrite(&s[i],sizeof(student),1,fl);
+    }
+    fclose(fl);
+}
+void search(){
+    student s1;
+    FILE *fp;
+    int j,ID;
+    fp=fopen("student.txt","r");
+    printf("Enter ID :");
+    scanf("%d",&ID);
+    while(fread(&s1,sizeof(student),1,fp))
+    {
+        if(s1.id==ID)
+        printf("%d   %s  %d  %d  %d  %s\n",s1.id,s1.name,s1.pass,s1.amount,s1.age,s1.loc);
+    }
+}
+void append(){
+    student *s;
+    int n,i;
+    FILE *fp;
+    printf("Enter numbers of people : ");
+    scanf("%d",&n);
+
+    s = (student*)calloc(n, sizeof(student));
+    fp = fopen("student.txt","a");
+    for(i=0;i<n;i++){
+        printf("ID : ");
+        scanf("%d",&s[i]);
+        fflush(stdin);
+        printf("Name :");
+        scanf("%[^\n]s",&s[i].name);
+        printf("Enter Ur password : ");
+        scanf("%d",&s[i].pass);
+        printf("Enter Ur amount : ");
+        scanf("%d",&s[i].amount);
+        printf("Enter Ur age : ");
+        scanf("%d",&s[i].age);
+        fflush(stdin);
+        printf("Enter Ur location : ");
+        gets(s[i].loc);
+        fwrite(&s[i],sizeof(student),1,fp);
+    }
+    fclose(fp);
+
+}
+int main(){
+    int x;
+    do{
+        printf("\n1.Insert");
+        printf("\n2.Search");
+        printf("\n3.Append");
+        printf("\n0.Exit");
+
+        printf("\nEnter Choice : ");
+        scanf("%d",&x);
+         switch(x){
+    case 1:
+        insert();
+    break;
+    case 2:
+        search();
+    break;
+    case 3:
+        append();
+    break;
+    case 0:
+    break;
+    default:
+        printf("\nInvalid input\n");
+    break;
+    }
+    }while(x!=0);
+    return 0;
+}
+
